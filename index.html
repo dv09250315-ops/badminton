@@ -35,41 +35,107 @@ body{
 .wrap{max-width:1100px;margin:0 auto;padding:20px 14px 40px}
 .hero{
   background:linear-gradient(135deg,#dff8ef 0%,#edf7ff 100%);
-  border:1px solid #d7eee6;border-radius:28px;padding:20px 18px;
-  box-shadow:var(--shadow);margin-bottom:16px;position:relative;overflow:hidden;
+  border:1px solid #d7eee6;
+  border-radius:28px;
+  padding:20px 18px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+  position:relative;
+  overflow:hidden;
 }
-.hero::after{content:"🏸";position:absolute;right:18px;top:10px;font-size:44px;opacity:.18}
+.hero::after{
+  content:"🏸";
+  position:absolute;
+  right:18px;
+  top:10px;
+  font-size:44px;
+  opacity:.18
+}
 .hero h1{margin:0 0 6px;font-size:24px;font-weight:800}
 .hero p{margin:0;color:var(--sub);font-size:14px}
+
 .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
 .tab{
-  border:1px solid #ddece4;border-radius:999px;padding:10px 16px;
-  font-size:14px;font-weight:700;cursor:pointer;transition:.2s ease;
-  background:#fff;color:var(--text);box-shadow:0 3px 10px rgba(0,0,0,.03);
+  border:1px solid #ddece4;
+  border-radius:999px;
+  padding:10px 16px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s ease;
+  background:#fff;
+  color:var(--text);
+  box-shadow:0 3px 10px rgba(0,0,0,.03);
 }
 .tab:hover{transform:translateY(-1px)}
-.tab.active{background:linear-gradient(135deg,var(--mint) 0%,#b8ecdc 100%);color:#164d3c;border-color:#9fd9c6}
-.panel{display:none}.panel.active{display:block}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
-.section-title{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:17px;font-weight:800}
+.tab.active{
+  background:linear-gradient(135deg,var(--mint) 0%,#b8ecdc 100%);
+  color:#164d3c;
+  border-color:#9fd9c6
+}
+
+.panel{display:none}
+.panel.active{display:block}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:var(--shadow);
+  margin-bottom:14px
+}
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+  font-size:17px;
+  font-weight:800
+}
 .section-title::before{content:"🏸";font-size:16px}
+
 .prow{
-  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
   padding:12px 14px;
   background:linear-gradient(180deg,#ffffff 0%,#f9fdfb 100%);
-  border:1px solid #e5f1eb;border-radius:16px;margin-bottom:10px;
+  border:1px solid #e5f1eb;
+  border-radius:16px;
+  margin-bottom:10px
 }
+
 input,select{
-  width:100%;border:1px solid #d8e8df;background:#fff;border-radius:14px;
-  padding:11px 12px;font-size:14px;color:var(--text);outline:none;
+  width:100%;
+  border:1px solid #d8e8df;
+  background:#fff;
+  border-radius:14px;
+  padding:11px 12px;
+  font-size:14px;
+  color:var(--text);
+  outline:none
 }
-input:focus,select:focus{border-color:#94d3bf;box-shadow:0 0 0 4px rgba(154,217,198,.18)}
+input:focus,select:focus{
+  border-color:#94d3bf;
+  box-shadow:0 0 0 4px rgba(154,217,198,.18)
+}
+
 .form-row{display:grid;grid-template-columns:1.2fr .8fr auto;gap:10px}
 .setup-top{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:768px){.form-row,.setup-top{grid-template-columns:1fr}}
+@media(max-width:768px){
+  .form-row,.setup-top{grid-template-columns:1fr}
+}
+
 .btn{
-  border:none;border-radius:999px;padding:10px 16px;font-weight:800;
-  cursor:pointer;transition:.2s ease;box-shadow:0 6px 14px rgba(0,0,0,.06);
+  border:none;
+  border-radius:999px;
+  padding:10px 16px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s ease;
+  box-shadow:0 6px 14px rgba(0,0,0,.06)
 }
 .btn:hover{transform:translateY(-1px) scale(1.01)}
 .btn-sm{padding:7px 12px;font-size:12px}
@@ -79,67 +145,198 @@ input:focus,select:focus{border-color:#94d3bf;box-shadow:0 0 0 4px rgba(154,217,
 .btn-blue{background:linear-gradient(135deg,#c8e2ff 0%,#9fccff 100%);color:#1d4f85}
 .btn-mint{background:linear-gradient(135deg,#bdf1df 0%,#8ddac0 100%);color:#185540}
 .btn-orange{background:linear-gradient(135deg,#ffd8a8 0%,#ffb366 100%);color:#7a3300}
-.tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700}
+
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:12px;
+  font-weight:700
+}
 .hint{color:var(--sub);font-size:12px}
-.lv-dot{min-width:24px;height:24px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;box-shadow:inset 0 -2px 0 rgba(0,0,0,.06)}
+
+.lv-dot{
+  min-width:24px;
+  height:24px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:800;
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.06)
+}
+
 .pill{
-  display:inline-flex;align-items:center;gap:6px;border-radius:999px;
-  padding:8px 12px;font-size:13px;font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:700;
   box-shadow:0 4px 10px rgba(0,0,0,.05);
-  cursor:pointer;transition:transform .15s,box-shadow .15s,outline .1s;
-  position:relative;
+  cursor:pointer;
+  transition:transform .15s,box-shadow .15s,outline .1s;
+  position:relative
 }
 .pill:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(0,0,0,.10)}
 .pill.selected{
-  outline:3px solid #4d89c7;outline-offset:2px;
+  outline:3px solid #4d89c7;
+  outline-offset:2px;
   box-shadow:0 0 0 5px rgba(77,137,199,.18);
-  transform:scale(1.06);
+  transform:scale(1.06)
 }
 .pill.swap-target{
-  outline:2px dashed #ffa040;outline-offset:2px;
-  animation:pulse-border .8s infinite alternate;
+  outline:2px dashed #ffa040;
+  outline-offset:2px;
+  animation:pulse-border .8s infinite alternate
 }
-@keyframes pulse-border{from{box-shadow:0 0 0 3px rgba(255,160,64,.15)}to{box-shadow:0 0 0 6px rgba(255,160,64,.30)}}
-.courts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+@keyframes pulse-border{
+  from{box-shadow:0 0 0 3px rgba(255,160,64,.15)}
+  to{box-shadow:0 0 0 6px rgba(255,160,64,.30)}
+}
+
+.courts-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:14px
+}
 .court-box{
   background:linear-gradient(180deg,#ffffff 0%,#f8fdfb 100%);
-  border:1px solid #dceee5;border-radius:24px;overflow:hidden;
-  box-shadow:var(--shadow);position:relative;
+  border:1px solid #dceee5;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  position:relative
 }
 .court-box::before{
-  content:"";position:absolute;right:-10px;top:-10px;width:90px;height:90px;
-  background:radial-gradient(circle,#fff1b8 0%,rgba(255,241,184,0) 70%);pointer-events:none;
+  content:"";
+  position:absolute;
+  right:-10px;
+  top:-10px;
+  width:90px;
+  height:90px;
+  background:radial-gradient(circle,#fff1b8 0%,rgba(255,241,184,0) 70%);
+  pointer-events:none
 }
 .court-hd{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:10px;padding:14px 14px 10px;border-bottom:1px dashed #dce9e2;flex-wrap:wrap;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:14px 14px 10px;
+  border-bottom:1px dashed #dce9e2;
+  flex-wrap:wrap
 }
 .court-bd{padding:14px}
-.timer-big{font-size:26px;font-weight:900;color:var(--mint-deep);letter-spacing:1px}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
-.sc{background:linear-gradient(135deg,#ffffff 0%,#f5fcf8 100%);border:1px solid #e1efe7;border-radius:18px;padding:14px 10px;text-align:center}
+.timer-big{
+  font-size:26px;
+  font-weight:900;
+  color:var(--mint-deep);
+  letter-spacing:1px
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:10px
+}
+.sc{
+  background:linear-gradient(135deg,#ffffff 0%,#f5fcf8 100%);
+  border:1px solid #e1efe7;
+  border-radius:18px;
+  padding:14px 10px;
+  text-align:center
+}
 .sn{font-size:24px;font-weight:900;color:var(--mint-deep)}
 .sl{margin-top:4px;font-size:12px;color:var(--sub)}
+
 .table-wrap{overflow:auto;border:1px solid #e2eee8;border-radius:18px}
 table{width:100%;border-collapse:collapse;background:#fff}
-th,td{padding:12px 10px;border-bottom:1px solid #edf4f0;text-align:left;font-size:14px}
+th,td{
+  padding:12px 10px;
+  border-bottom:1px solid #edf4f0;
+  text-align:left;
+  font-size:14px
+}
 th{background:#f3fbf7;color:#47675b;font-weight:800}
-.empty{text-align:center;padding:28px 16px;color:#7a8a83;border:2px dashed #d8ebe2;border-radius:20px;background:#fbfffd}
-.row-between{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.counter-box{display:flex;align-items:center;gap:10px;background:linear-gradient(180deg,#fff 0%,#f8fcfa 100%);border:1px solid #e3efe8;border-radius:18px;padding:12px 14px}
-.counter-num{min-width:42px;text-align:center;font-size:22px;font-weight:900;color:var(--mint-deep)}
-.subtle{font-size:13px;color:var(--sub)}
-.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mb0{margin-bottom:0}
 
-/* ── Swap bar ── */
+.empty{
+  text-align:center;
+  padding:28px 16px;
+  color:#7a8a83;
+  border:2px dashed #d8ebe2;
+  border-radius:20px;
+  background:#fbfffd
+}
+
+.row-between{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap
+}
+.counter-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:linear-gradient(180deg,#fff 0%,#f8fcfa 100%);
+  border:1px solid #e3efe8;
+  border-radius:18px;
+  padding:12px 14px
+}
+.counter-num{
+  min-width:42px;
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  color:var(--mint-deep)
+}
+.subtle{font-size:13px;color:var(--sub)}
+.mt8{margin-top:8px}
+.mt12{margin-top:12px}
+.mt16{margin-top:16px}
+.mb0{margin-bottom:0}
+
+.archive-day{
+  border:1px solid #e4efe8;
+  border-radius:18px;
+  padding:14px;
+  background:linear-gradient(180deg,#fff 0%,#fbfefc 100%);
+  margin-bottom:12px
+}
+.archive-block{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px dashed #e2ebe5
+}
+.archive-mini{font-size:13px;color:var(--sub)}
+
 .swap-bar{
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
   background:linear-gradient(135deg,#fff8ec 0%,#fff3dc 100%);
-  border:1px solid #ffd080;border-radius:18px;
-  padding:12px 16px;margin-bottom:14px;
+  border:1px solid #ffd080;
+  border-radius:18px;
+  padding:12px 16px;
+  margin-bottom:14px
 }
 .swap-bar-label{font-weight:800;font-size:14px;color:#7a4a00}
-.swap-selected-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700}
+.swap-selected-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700
+}
 .swap-hint{font-size:12px;color:#a06000;flex:1}
 </style>
 </head>
@@ -154,7 +351,8 @@ th{background:#f3fbf7;color:#47675b;font-weight:800}
     <button class="tab active" onclick="goTab('setup')">設定</button>
     <button class="tab" onclick="goTab('players')">球員</button>
     <button class="tab" onclick="goTab('courts')">球場</button>
-    <button class="tab" onclick="goTab('history')">紀錄</button>
+    <button class="tab" onclick="goTab('history')">今日紀錄</button>
+    <button class="tab" onclick="goTab('archive')">歷史資料</button>
   </div>
 
   <div id="t-setup" class="panel active">
@@ -172,6 +370,7 @@ th{background:#f3fbf7;color:#47675b;font-weight:800}
             <button class="btn btn-blue btn-sm" onclick="adjCourts(1)">＋</button>
           </div>
         </div>
+
         <div class="mt16">
           <div class="section-title">新增球員</div>
           <div class="form-row">
@@ -182,6 +381,7 @@ th{background:#f3fbf7;color:#47675b;font-weight:800}
           <div class="subtle mt8" id="pcnt-setup">尚無球員</div>
         </div>
       </div>
+
       <div class="card">
         <div class="section-title">快速開始</div>
         <div class="subtle">設定好球員與場地後，按一下就能自動排場。</div>
@@ -191,6 +391,7 @@ th{background:#f3fbf7;color:#47675b;font-weight:800}
         </div>
       </div>
     </div>
+
     <div class="card">
       <div class="row-between">
         <div class="section-title mb0">目前球員</div>
@@ -210,6 +411,7 @@ th{background:#f3fbf7;color:#47675b;font-weight:800}
       </div>
       <div class="subtle mt8" id="pcnt">尚無球員</div>
     </div>
+
     <div class="card">
       <div class="section-title">球員列表</div>
       <div id="plist"></div>
@@ -229,26 +431,51 @@ th{background:#f3fbf7;color:#47675b;font-weight:800}
       </div>
       <div id="hstats" class="stats-grid mt12"></div>
     </div>
+
     <div class="card">
       <div class="section-title">球員統計</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>球員</th><th>等級</th><th>上場次數</th><th>累計時間</th></tr></thead>
+          <thead>
+            <tr>
+              <th>球員</th>
+              <th>等級</th>
+              <th>上場次數</th>
+              <th>累計時間</th>
+            </tr>
+          </thead>
           <tbody id="htable"></tbody>
         </table>
       </div>
     </div>
+
     <div class="card">
       <div class="section-title">場次紀錄</div>
       <div id="glog"></div>
     </div>
   </div>
+
+  <div id="t-archive" class="panel">
+    <div class="card">
+      <div class="section-title">歷史資料</div>
+      <div id="archive-list"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-const SK='bdm_v5';
+const SK='bdm_v6';
 const TODAY=new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'});
-let S={numCourts:2,players:[],courts:[],nextQueue:[],history:{},gameLog:[],lastSaved:TODAY};
+let S={
+  numCourts:2,
+  players:[],
+  courts:[],
+  nextQueue:[],
+  history:{},
+  gameLog:[],
+  archives:{},
+  lastSaved:TODAY
+};
 let timers={};
 let gameSeq=0;
 let swapSrc=null;
@@ -259,27 +486,40 @@ function lvC(lv){
   if(lv<=12)return{bg:'#CFF2C9',fg:'#226B2A'};
   return{bg:'#FFE39B',fg:'#7A5400'};
 }
-function pStyle(lv){const c=lvC(lv);return`background:${c.bg};color:${c.fg}`}
-function dotEl(lv){const c=lvC(lv);return`<span class="lv-dot" style="background:${c.bg};color:${c.fg}">${lv}</span>`}
+function pStyle(lv){const c=lvC(lv);return`background:${c.bg};color:${c.fg}`;}
+function dotEl(lv){const c=lvC(lv);return`<span class="lv-dot" style="background:${c.bg};color:${c.fg}">${lv}</span>`;}
+function deepClone(obj){return JSON.parse(JSON.stringify(obj));}
 
 /* storage */
 function save(){
-  try{localStorage.setItem(SK,JSON.stringify({...S,courts:[],nextQueue:[]}))}catch(e){}
+  try{
+    localStorage.setItem(SK,JSON.stringify({...S,courts:[],nextQueue:[]}));
+  }catch(e){}
 }
 function load(){
   try{
-    const raw=localStorage.getItem(SK);if(!raw)return;
+    const raw=localStorage.getItem(SK);
+    if(!raw)return;
     const d=JSON.parse(raw);
     S.numCourts=d.numCourts||2;
     S.players=d.players||[];
-    if(d.lastSaved===TODAY){S.history=d.history||{};S.gameLog=d.gameLog||[];gameSeq=S.gameLog.length;}
-    else{S.history={};S.gameLog=[];S.lastSaved=TODAY;}
+    S.archives=d.archives||{};
+    if(d.lastSaved===TODAY){
+      S.history=d.history||{};
+      S.gameLog=d.gameLog||[];
+      gameSeq=S.gameLog.length;
+    }else{
+      S.history={};
+      S.gameLog=[];
+      S.lastSaved=TODAY;
+      gameSeq=0;
+    }
   }catch(e){}
 }
 
 /* tabs */
 function goTab(t){
-  ['setup','players','courts','history'].forEach((n,i)=>{
+  ['setup','players','courts','history','archive'].forEach((n,i)=>{
     document.querySelectorAll('.tab')[i].classList.toggle('active',n===t);
     document.getElementById('t-'+n).classList.toggle('active',n===t);
   });
@@ -287,12 +527,16 @@ function goTab(t){
   if(t==='courts'){renderSwapBar();renderCourts();}
   if(t==='players'){renderPlayers();syncPcnt();}
   if(t==='setup'){renderPSetup();syncSetup();}
+  if(t==='archive')renderArchive();
 }
 
 /* setup */
 function buildSelects(){
   const opts=[...Array(18)].map((_,i)=>`<option value="${i+1}"${i===8?' selected':''}>Lv ${i+1}</option>`).join('');
-  ['plv','plv2'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});
+  ['plv','plv2'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML=opts;
+  });
 }
 function adjCourts(d){
   S.numCourts=Math.max(1,Math.min(10,S.numCourts+d));
@@ -327,13 +571,21 @@ function removeP(id){
 }
 function syncPcnt(){
   const t=S.players.length?`共 ${S.players.length} 位球員`:'尚無球員';
-  ['pcnt','pcnt-setup','pcnt-setup2'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=t;});
+  ['pcnt','pcnt-setup','pcnt-setup2'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.textContent=t;
+  });
 }
-function syncSetup(){document.getElementById('court-num-disp').textContent=S.numCourts;}
-
+function syncSetup(){
+  document.getElementById('court-num-disp').textContent=S.numCourts;
+}
 function renderPSetup(){
-  const el=document.getElementById('plist-setup');if(!el)return;
-  if(!S.players.length){el.innerHTML=`<div class="empty">目前還沒有球員，先新增幾位吧 ✨</div>`;return;}
+  const el=document.getElementById('plist-setup');
+  if(!el)return;
+  if(!S.players.length){
+    el.innerHTML=`<div class="empty">目前還沒有球員，先新增幾位吧 ✨</div>`;
+    return;
+  }
   el.innerHTML=S.players.map(p=>`
     <div class="prow">
       <span style="font-weight:700">${p.name}</span>
@@ -341,11 +593,16 @@ function renderPSetup(){
         ${dotEl(p.level)}<span style="font-size:12px;color:${lvC(p.level).fg};font-weight:700">Lv${p.level}</span>
         <button class="btn btn-red btn-sm" onclick="removeP(${p.id})">移除</button>
       </div>
-    </div>`).join('');
+    </div>
+  `).join('');
 }
 function renderPlayers(){
-  const el=document.getElementById('plist');if(!el)return;
-  if(!S.players.length){el.innerHTML=`<div class="empty">目前還沒有球員，先新增幾位吧 ✨</div>`;return;}
+  const el=document.getElementById('plist');
+  if(!el)return;
+  if(!S.players.length){
+    el.innerHTML=`<div class="empty">目前還沒有球員，先新增幾位吧 ✨</div>`;
+    return;
+  }
   el.innerHTML=S.players.map(p=>`
     <div class="prow">
       <span style="font-weight:700">${p.name}</span>
@@ -353,13 +610,14 @@ function renderPlayers(){
         ${dotEl(p.level)}<span style="font-size:12px;color:${lvC(p.level).fg};font-weight:700">Lv${p.level}</span>
         <button class="btn btn-red btn-sm" onclick="removeP(${p.id})">移除</button>
       </div>
-    </div>`).join('');
+    </div>
+  `).join('');
 }
 
 /* arrange */
 function bestMatch4(pool){
   const [a,b,c,d]=pool;
-  return[
+  return [
     {tA:[a,b],tB:[c,d],diff:Math.abs(a.level+b.level-c.level-d.level)},
     {tA:[a,c],tB:[b,d],diff:Math.abs(a.level+c.level-b.level-d.level)},
     {tA:[a,d],tB:[b,c],diff:Math.abs(a.level+d.level-b.level-c.level)},
@@ -367,8 +625,11 @@ function bestMatch4(pool){
 }
 function doArrange(){
   if(S.players.length<4){alert('至少需要 4 位球員才能排場');return;}
-  Object.values(timers).forEach(clearInterval);timers={};swapSrc=null;
-  S.courts=[];S.nextQueue=[];
+  Object.values(timers).forEach(clearInterval);
+  timers={};
+  swapSrc=null;
+  S.courts=[];
+  S.nextQueue=[];
   const pool=[...S.players].sort((a,b)=>b.level-a.level);
   const n=Math.min(S.numCourts,Math.floor(pool.length/4));
   for(let i=0;i<n;i++){
@@ -381,51 +642,82 @@ function doArrange(){
 
 /* court controls */
 function startCourt(id){
-  const c=S.courts.find(x=>x.id===id);if(!c||c.status==='playing')return;
-  c.status='playing';c.startTime=Date.now();c.elapsed=0;
+  const c=S.courts.find(x=>x.id===id);
+  if(!c||c.status==='playing')return;
+  c.status='playing';
+  c.startTime=Date.now();
+  c.elapsed=0;
+
   [...c.teamA,...c.teamB].forEach(p=>{
     if(!S.history[p.name])S.history[p.name]={count:0,totalSec:0,level:p.level};
-    S.history[p.name].count++;S.history[p.name].level=p.level;
+    S.history[p.name].count++;
+    S.history[p.name].level=p.level;
   });
+
   save();
+
   if(timers[id])clearInterval(timers[id]);
   timers[id]=setInterval(()=>{
     if(c.status==='playing'){
       c.elapsed=Math.floor((Date.now()-c.startTime)/1000);
-      const el=document.getElementById(`tmr-${id}`);if(el)el.textContent=fmtMS(c.elapsed);
+      const el=document.getElementById(`tmr-${id}`);
+      if(el)el.textContent=fmtMS(c.elapsed);
     }
   },1000);
+
   renderCourts();
 }
+
 function endCourt(id){
-  const c=S.courts.find(x=>x.id===id);if(!c)return;
-  if(timers[id])clearInterval(timers[id]);delete timers[id];
+  const c=S.courts.find(x=>x.id===id);
+  if(!c)return;
+
+  if(timers[id])clearInterval(timers[id]);
+  delete timers[id];
+
   const elapsed=c.status==='playing'?c.elapsed:0;
   const startDt=c.startTime?new Date(c.startTime):new Date();
   const endDt=new Date(startDt.getTime()+elapsed*1000);
-  [...c.teamA,...c.teamB].forEach(p=>{if(S.history[p.name])S.history[p.name].totalSec+=elapsed;});
+
+  [...c.teamA,...c.teamB].forEach(p=>{
+    if(S.history[p.name])S.history[p.name].totalSec+=elapsed;
+  });
+
   gameSeq++;
   S.gameLog.push({
-    seq:gameSeq,court:id,
+    seq:gameSeq,
+    court:id,
     teamA:c.teamA.map(p=>({name:p.name,level:p.level})),
     teamB:c.teamB.map(p=>({name:p.name,level:p.level})),
-    startStr:fmtHHMM(startDt),endStr:fmtHHMM(endDt),mins:Math.round(elapsed/60)
+    startStr:fmtHHMM(startDt),
+    endStr:fmtHHMM(endDt),
+    mins:Math.round(elapsed/60)
   });
+
   save();
+
   S.nextQueue.push(...c.teamA,...c.teamB);
   if(S.nextQueue.length>=4){
     S.nextQueue.sort((a,b)=>(S.history[a.name]||{count:0}).count-(S.history[b.name]||{count:0}).count);
-    const four=S.nextQueue.splice(0,4);four.sort((a,b)=>b.level-a.level);
+    const four=S.nextQueue.splice(0,4);
+    four.sort((a,b)=>b.level-a.level);
     const m=bestMatch4(four);
-    c.teamA=m.tA;c.teamB=m.tB;c.status='waiting';c.startTime=null;c.elapsed=0;
+    c.teamA=m.tA;
+    c.teamB=m.tB;
+    c.status='waiting';
+    c.startTime=null;
+    c.elapsed=0;
   }else{
     S.courts=S.courts.filter(x=>x.id!==id);
   }
-  swapSrc=null;renderSwapBar();renderCourts();
+
+  swapSrc=null;
+  renderSwapBar();
+  renderCourts();
 }
 
 /* swap */
-function srcKey(src){return JSON.stringify(src)}
+function srcKey(src){return JSON.stringify(src);}
 function getPlayer(src){
   if(src.type==='court'){
     const c=S.courts.find(x=>x.id===src.courtId);
@@ -436,47 +728,48 @@ function getPlayer(src){
 function setPlayer(src,p){
   if(src.type==='court'){
     const c=S.courts.find(x=>x.id===src.courtId);
-    if(src.team==='A')c.teamA[src.idx]=p;else c.teamB[src.idx]=p;
+    if(src.team==='A')c.teamA[src.idx]=p;
+    else c.teamB[src.idx]=p;
   }else{
     S.nextQueue[src.idx]=p;
   }
 }
-
 function clickPill(srcEncoded){
-  const src = JSON.parse(decodeURIComponent(srcEncoded));
+  const src=JSON.parse(decodeURIComponent(srcEncoded));
 
   if(!swapSrc){
-    swapSrc = src;
+    swapSrc=src;
     renderSwapBar();
     renderCourts();
     return;
   }
 
-  if(srcKey(swapSrc) === srcKey(src)){
-    swapSrc = null;
+  if(srcKey(swapSrc)===srcKey(src)){
+    swapSrc=null;
     renderSwapBar();
     renderCourts();
     return;
   }
 
-  const pA = getPlayer(swapSrc);
-  const pB = getPlayer(src);
-  setPlayer(swapSrc, pB);
-  setPlayer(src, pA);
+  const pA=getPlayer(swapSrc);
+  const pB=getPlayer(src);
+  setPlayer(swapSrc,pB);
+  setPlayer(src,pA);
 
-  swapSrc = null;
+  swapSrc=null;
   renderSwapBar();
   renderCourts();
 }
-
 function renderSwapBar(){
-  const el=document.getElementById('swap-bar-area');if(!el)return;
+  const el=document.getElementById('swap-bar-area');
+  if(!el)return;
   if(!swapSrc){el.innerHTML='';return;}
   const p=getPlayer(swapSrc);
   const c=lvC(p.level);
   const loc=swapSrc.type==='court'
-    ?`球場 ${swapSrc.courtId} 隊${swapSrc.team==='A'?'A':'B'}`
-    :'候補區';
+    ? `球場 ${swapSrc.courtId} 隊${swapSrc.team==='A'?'A':'B'}`
+    : '候補區';
+
   el.innerHTML=`
     <div class="swap-bar">
       <span style="font-size:18px">🔄</span>
@@ -485,21 +778,26 @@ function renderSwapBar(){
       <span class="subtle" style="color:#a06000">來自 ${loc}</span>
       <span class="swap-hint">→ 點擊另一位球員完成調換</span>
       <button class="btn btn-orange btn-sm" onclick="swapSrc=null;renderSwapBar();renderCourts()">取消</button>
-    </div>`;
+    </div>
+  `;
 }
 
-/* render courts */
+/* courts */
 function renderCourts(){
   const el=document.getElementById('carea');
-  if(!S.courts.length){el.innerHTML=`<div class="empty">請先完成設定並點擊「自動排場」</div>`;return;}
+  if(!S.courts.length){
+    el.innerHTML=`<div class="empty">請先完成設定並點擊「自動排場」</div>`;
+    return;
+  }
+
   const isSwapping=!!swapSrc;
 
   function makePill(p,src){
-    const srcEncoded = encodeURIComponent(JSON.stringify(src));
-    const isSelected = swapSrc && srcKey(swapSrc) === srcKey(src);
-    const isTarget = isSwapping && !isSelected;
-    const cls = `pill${isSelected ? ' selected' : isTarget ? ' swap-target' : ''}`;
-    const title = isSelected
+    const srcEncoded=encodeURIComponent(JSON.stringify(src));
+    const isSelected=swapSrc&&srcKey(swapSrc)===srcKey(src);
+    const isTarget=isSwapping&&!isSelected;
+    const cls=`pill${isSelected?' selected':isTarget?' swap-target':''}`;
+    const title=isSelected
       ? '再次點擊取消選取'
       : isSwapping
         ? '點擊此球員進行調換'
@@ -509,6 +807,7 @@ function renderCourts(){
   }
 
   let html=`<div class="courts-grid">`;
+
   S.courts.forEach(c=>{
     const isP=c.status==='playing';
     const sA=c.teamA.reduce((s,p)=>s+p.level,0);
@@ -518,74 +817,110 @@ function renderCourts(){
     const pillsA=c.teamA.map((p,i)=>makePill(p,{type:'court',courtId:c.id,team:'A',idx:i})).join('');
     const pillsB=c.teamB.map((p,i)=>makePill(p,{type:'court',courtId:c.id,team:'B',idx:i})).join('');
 
-    html+=`<div class="court-box">
-      <div class="court-hd">
-        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
-          <span style="font-weight:800">🏸 球場 ${c.id}</span>
-          ${isP?`<span class="tag" style="background:#EAF8E8;color:#2A6D2F">比賽中</span>`:`<span class="tag" style="background:#F3F4F6;color:#666">待上場</span>`}
-          <span class="hint">強度差 ${Math.abs(sA-sB)}</span>
+    html+=`
+      <div class="court-box">
+        <div class="court-hd">
+          <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+            <span style="font-weight:800">🏸 球場 ${c.id}</span>
+            ${isP ? `<span class="tag" style="background:#EAF8E8;color:#2A6D2F">比賽中</span>` : `<span class="tag" style="background:#F3F4F6;color:#666">待上場</span>`}
+            <span class="hint">強度差 ${Math.abs(sA-sB)}</span>
+          </div>
+          <div style="display:flex;gap:5px">
+            ${!isP ? `<button class="btn btn-green btn-sm" onclick="startCourt(${c.id})">▶ 上場</button>` : ``}
+            ${isP ? `<button class="btn btn-amber btn-sm" onclick="endCourt(${c.id})">■ 結束</button>` : ``}
+          </div>
         </div>
-        <div style="display:flex;gap:5px">
-          ${!isP?`<button class="btn btn-green btn-sm" onclick="startCourt(${c.id})">▶ 上場</button>`:''}
-          ${isP?`<button class="btn btn-amber btn-sm" onclick="endCourt(${c.id})">■ 結束</button>`:''}
+        <div class="court-bd">
+          <div style="margin-bottom:8px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+            <span style="font-size:12px;color:#6c7a73;min-width:58px;font-weight:700">隊伍 A (${sA})</span>
+            ${pillsA}
+          </div>
+          <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+            <span style="font-size:12px;color:#6c7a73;min-width:58px;font-weight:700">隊伍 B (${sB})</span>
+            ${pillsB}
+          </div>
+          ${isP ? `
+            <div style="margin-top:12px;padding-top:10px;border-top:1px solid #e8e5dd;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+              <span class="hint">開始時間 ${startStr}</span>
+              <span class="timer-big" id="tmr-${c.id}">${fmtMS(c.elapsed)}</span>
+            </div>
+          ` : ``}
         </div>
       </div>
-      <div class="court-bd">
-        <div style="margin-bottom:8px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-          <span style="font-size:12px;color:#6c7a73;min-width:58px;font-weight:700">隊伍 A (${sA})</span>
-          ${pillsA}
-        </div>
-        <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-          <span style="font-size:12px;color:#6c7a73;min-width:58px;font-weight:700">隊伍 B (${sB})</span>
-          ${pillsB}
-        </div>
-        ${isP?`<div style="margin-top:12px;padding-top:10px;border-top:1px solid #e8e5dd;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-          <span class="hint">開始時間 ${startStr}</span>
-          <span class="timer-big" id="tmr-${c.id}">${fmtMS(c.elapsed)}</span>
-        </div>`:''}
-      </div>
-    </div>`;
+    `;
   });
+
   html+=`</div>`;
 
   if(S.nextQueue.length>0){
     const qPills=S.nextQueue.map((p,i)=>makePill(p,{type:'queue',idx:i})).join('');
-    html+=`<div class="card" style="border:1px solid #BFDFFF;margin-top:14px">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
-        <span style="font-size:15px;font-weight:800">🐥 候補隊伍</span>
-        <span class="tag" style="background:#EEEDFE;color:#3C3489">等待 ${S.nextQueue.length} 人</span>
-        ${isSwapping?`<span class="hint" style="color:#a06000">← 也可與候補球員調換</span>`:''}
+    html+=`
+      <div class="card" style="border:1px solid #BFDFFF;margin-top:14px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+          <span style="font-size:15px;font-weight:800">🐥 候補隊伍</span>
+          <span class="tag" style="background:#EEEDFE;color:#3C3489">等待 ${S.nextQueue.length} 人</span>
+          ${isSwapping ? `<span class="hint" style="color:#a06000">← 也可與候補球員調換</span>` : ``}
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">${qPills}</div>
       </div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap">${qPills}</div>
-    </div>`;
+    `;
   }
+
   el.innerHTML=html;
 }
 
-/* history */
+/* today history */
+function archiveTodayIfNeeded(){
+  if(!S.gameLog.length)return;
+  S.archives[TODAY]={
+    history:deepClone(S.history),
+    gameLog:deepClone(S.gameLog)
+  };
+}
 function clearHistory(){
   if(!confirm('確定要清除今日所有紀錄嗎？'))return;
-  S.history={};S.gameLog=[];gameSeq=0;save();renderHistory();
+
+  archiveTodayIfNeeded();
+
+  S.history={};
+  S.gameLog=[];
+  gameSeq=0;
+
+  save();
+  renderHistory();
+  renderArchive();
 }
 function renderHistory(){
   document.getElementById('today-lbl').textContent=`今日紀錄 — ${TODAY}`;
   const entries=Object.entries(S.history);
   const totalPPL=entries.reduce((s,[,h])=>s+h.count,0);
   const maxCt=Math.max(...entries.map(([,h])=>h.count),0);
+
   document.getElementById('hstats').innerHTML=`
     <div class="sc"><div class="sn">${entries.length}</div><div class="sl">球員人數</div></div>
     <div class="sc"><div class="sn">${S.numCourts}</div><div class="sl">球場數量</div></div>
     <div class="sc"><div class="sn">${S.gameLog.length}</div><div class="sl">完成場次</div></div>
     <div class="sc"><div class="sn">${totalPPL}</div><div class="sl">總上場人次</div></div>
-    <div class="sc"><div class="sn">${maxCt}</div><div class="sl">最多上場次</div></div>`;
+    <div class="sc"><div class="sn">${maxCt}</div><div class="sl">最多上場次</div></div>
+  `;
+
   const sorted=entries.sort((a,b)=>b[1].count-a[1].count);
   document.getElementById('htable').innerHTML=sorted.length
-    ?sorted.map(([name,h],i)=>`<tr>
-      <td style="font-weight:${i<3?'700':'500'}">${['🥇','🥈','🥉'][i]||''}${i<3?' ':''}${name}</td>
-      <td>${dotEl(h.level)}</td><td>${h.count} 次</td><td>${fmtDur(h.totalSec)}</td>
-    </tr>`).join('')
-    :`<tr><td colspan="4" style="text-align:center;color:#7a8a83">今日尚無球員統計資料</td></tr>`;
-  if(!S.gameLog.length){document.getElementById('glog').innerHTML=`<div class="empty">今日尚無完成場次</div>`;return;}
+    ? sorted.map(([name,h],i)=>`
+      <tr>
+        <td style="font-weight:${i<3?'700':'500'}">${['🥇','🥈','🥉'][i]||''}${i<3?' ':''}${name}</td>
+        <td>${dotEl(h.level)}</td>
+        <td>${h.count} 次</td>
+        <td>${fmtDur(h.totalSec)}</td>
+      </tr>
+    `).join('')
+    : `<tr><td colspan="4" style="text-align:center;color:#7a8a83">今日尚無球員統計資料</td></tr>`;
+
+  if(!S.gameLog.length){
+    document.getElementById('glog').innerHTML=`<div class="empty">今日尚無完成場次</div>`;
+    return;
+  }
+
   document.getElementById('glog').innerHTML=S.gameLog.slice().reverse().map(g=>`
     <div style="padding:10px 0;border-bottom:1px solid #e8e5dd">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px">
@@ -593,18 +928,115 @@ function renderHistory(){
         <span class="hint">${g.startStr} → ${g.endStr}（${g.mins} 分鐘）</span>
       </div>
       <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">
-        ${g.teamA.map(p=>`<span class="pill" style="${pStyle(p.level)}">${p.name} · ${p.level}</span>`).join('')}
+        ${g.teamA.map(p=>`<span class="pill" style="${pStyle(p.level)};cursor:default">${p.name} · ${p.level}</span>`).join('')}
         <span style="color:#888;font-size:12px">vs</span>
-        ${g.teamB.map(p=>`<span class="pill" style="${pStyle(p.level)}">${p.name} · ${p.level}</span>`).join('')}
+        ${g.teamB.map(p=>`<span class="pill" style="${pStyle(p.level)};cursor:default">${p.name} · ${p.level}</span>`).join('')}
       </div>
-    </div>`).join('');
+    </div>
+  `).join('');
+}
+
+/* archives */
+function deleteArchive(date){
+  if(!confirm(`確定刪除 ${date} 的歷史資料？`))return;
+  delete S.archives[date];
+  save();
+  renderArchive();
+}
+function renderArchive(){
+  const el=document.getElementById('archive-list');
+  if(!el)return;
+
+  const dates=Object.keys(S.archives).sort((a,b)=>new Date(b)-new Date(a));
+
+  if(!dates.length){
+    el.innerHTML=`<div class="empty">目前還沒有歷史資料</div>`;
+    return;
+  }
+
+  el.innerHTML=dates.map(date=>{
+    const data=S.archives[date];
+    const entries=Object.entries(data.history||{}).sort((a,b)=>b[1].count-a[1].count);
+    const log=(data.gameLog||[]).slice().reverse();
+
+    return `
+      <div class="archive-day">
+        <div class="row-between">
+          <div>
+            <div style="font-weight:800;font-size:16px">${date}</div>
+            <div class="archive-mini">球員 ${entries.length} 位 ｜ 場次 ${log.length} 場</div>
+          </div>
+          <button class="btn btn-red btn-sm" onclick="deleteArchive('${date}')">刪除</button>
+        </div>
+
+        <div class="archive-block">
+          <div style="font-weight:800;margin-bottom:8px">球員統計</div>
+          ${
+            entries.length
+            ? `<div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>球員</th>
+                      <th>等級</th>
+                      <th>上場次數</th>
+                      <th>累計時間</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${entries.map(([name,h],i)=>`
+                      <tr>
+                        <td style="font-weight:${i<3?'700':'500'}">${['🥇','🥈','🥉'][i]||''}${i<3?' ':''}${name}</td>
+                        <td>${dotEl(h.level)}</td>
+                        <td>${h.count} 次</td>
+                        <td>${fmtDur(h.totalSec)}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>`
+            : `<div class="archive-mini">無球員統計資料</div>`
+          }
+        </div>
+
+        <div class="archive-block">
+          <div style="font-weight:800;margin-bottom:8px">場次紀錄</div>
+          ${
+            log.length
+            ? log.map(g=>`
+                <div style="padding:10px 0;border-bottom:1px solid #e8e5dd">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px">
+                    <span style="font-weight:800">第 ${g.seq} 場 · 球場 ${g.court}</span>
+                    <span class="hint">${g.startStr} → ${g.endStr}（${g.mins} 分鐘）</span>
+                  </div>
+                  <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">
+                    ${g.teamA.map(p=>`<span class="pill" style="${pStyle(p.level)};cursor:default">${p.name} · ${p.level}</span>`).join('')}
+                    <span style="color:#888;font-size:12px">vs</span>
+                    ${g.teamB.map(p=>`<span class="pill" style="${pStyle(p.level)};cursor:default">${p.name} · ${p.level}</span>`).join('')}
+                  </div>
+                </div>
+              `).join('')
+            : `<div class="archive-mini">無場次資料</div>`
+          }
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 /* utils */
-function fmtMS(s){return`${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`}
-function fmtHHMM(d){return d.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false})}
-function fmtDur(s){const m=Math.floor(s/60);return m<60?`${m} 分`:`${Math.floor(m/60)} 時 ${m%60} 分`}
+function fmtMS(s){
+  return`${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;
+}
+function fmtHHMM(d){
+  return d.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false});
+}
+function fmtDur(s){
+  const m=Math.floor(s/60);
+  return m<60?`${m} 分`:`${Math.floor(m/60)} 時 ${m%60} 分`;
+}
 
+/* init */
 load();
 buildSelects();
 renderPSetup();
