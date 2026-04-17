@@ -464,7 +464,7 @@ th{background:#f3fbf7;color:#47675b;font-weight:800}
 </div>
 
 <script>
-const SK='bdm_v6';
+const SK='bdm_v7';
 const TODAY=new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'});
 let S={
   numCourts:2,
@@ -479,6 +479,7 @@ let S={
 let timers={};
 let gameSeq=0;
 let swapSrc=null;
+let lastPlayers=[];
 
 /* helpers */
 function lvC(lv){
@@ -493,7 +494,12 @@ function deepClone(obj){return JSON.parse(JSON.stringify(obj));}
 /* storage */
 function save(){
   try{
-    localStorage.setItem(SK,JSON.stringify({...S,courts:[],nextQueue:[]}));
+    localStorage.setItem(SK,JSON.stringify({
+      ...S,
+      courts:[],
+      nextQueue:[],
+      lastPlayers:lastPlayers
+    }));
   }catch(e){}
 }
 function load(){
@@ -504,6 +510,7 @@ function load(){
     S.numCourts=d.numCourts||2;
     S.players=d.players||[];
     S.archives=d.archives||{};
+    lastPlayers=d.lastPlayers||[];
     if(d.lastSaved===TODAY){
       S.history=d.history||{};
       S.gameLog=d.gameLog||[];
@@ -513,6 +520,7 @@ function load(){
       S.gameLog=[];
       S.lastSaved=TODAY;
       gameSeq=0;
+      lastPlayers=[];
     }
   }catch(e){}
 }
@@ -550,7 +558,7 @@ function addP(){
   const lv=parseInt(document.getElementById('plv').value);
   if(!n)return;
   if(S.players.find(p=>p.name===n)){alert('此球員已存在');return;}
-  S.players.push({id:Date.now(),name:n,level:lv});
+  S.players.push({id:Date.now()+Math.random(),name:n,level:lv});
   if(!S.history[n])S.history[n]={count:0,totalSec:0,level:lv};
   document.getElementById('pname').value='';
   save();renderPSetup();syncPcnt();syncSetup();
@@ -560,7 +568,7 @@ function addP2(){
   const lv=parseInt(document.getElementById('plv2').value);
   if(!n)return;
   if(S.players.find(p=>p.name===n)){alert('此球員已存在');return;}
-  S.players.push({id:Date.now(),name:n,level:lv});
+  S.players.push({id:Date.now()+Math.random(),name:n,level:lv});
   if(!S.history[n])S.history[n]={count:0,totalSec:0,level:lv};
   document.getElementById('pname2').value='';
   save();renderPlayers();syncPcnt();renderPSetup();syncSetup();
@@ -628,8 +636,10 @@ function doArrange(){
   Object.values(timers).forEach(clearInterval);
   timers={};
   swapSrc=null;
+  lastPlayers=[];
   S.courts=[];
   S.nextQueue=[];
+
   const pool=[...S.players].sort((a,b)=>b.level-a.level);
   const n=Math.min(S.numCourts,Math.floor(pool.length/4));
   for(let i=0;i<n;i++){
@@ -637,6 +647,7 @@ function doArrange(){
     S.courts.push({id:i+1,teamA:m.tA,teamB:m.tB,status:'waiting',startTime:null,elapsed:0});
   }
   S.nextQueue=[...pool];
+  save();
   goTab('courts');
 }
 
@@ -668,6 +679,31 @@ function startCourt(id){
   renderCourts();
 }
 
+function pickNextFourFromQueue(){
+  if(S.nextQueue.length < 4) return null;
+
+  let eligible = S.nextQueue.filter(p => !lastPlayers.includes(p.name));
+
+  if(eligible.length < 4){
+    eligible = [...S.nextQueue];
+  }
+
+  eligible.sort((a,b)=>{
+    const ca=(S.history[a.name]||{count:0}).count;
+    const cb=(S.history[b.name]||{count:0}).count;
+    if(ca!==cb) return ca-cb;
+    return b.level-a.level;
+  });
+
+  const four = eligible.slice(0,4);
+  if(four.length < 4) return null;
+
+  const ids = new Set(four.map(p=>p.id));
+  S.nextQueue = S.nextQueue.filter(p => !ids.has(p.id));
+
+  return four;
+}
+
 function endCourt(id){
   const c=S.courts.find(x=>x.id===id);
   if(!c)return;
@@ -694,12 +730,14 @@ function endCourt(id){
     mins:Math.round(elapsed/60)
   });
 
-  save();
+  const justPlayed=[...c.teamA,...c.teamB];
+  lastPlayers=justPlayed.map(p=>p.name);
 
-  S.nextQueue.push(...c.teamA,...c.teamB);
-  if(S.nextQueue.length>=4){
-    S.nextQueue.sort((a,b)=>(S.history[a.name]||{count:0}).count-(S.history[b.name]||{count:0}).count);
-    const four=S.nextQueue.splice(0,4);
+  S.nextQueue.push(...justPlayed);
+
+  const four=pickNextFourFromQueue();
+
+  if(four){
     four.sort((a,b)=>b.level-a.level);
     const m=bestMatch4(four);
     c.teamA=m.tA;
@@ -711,6 +749,7 @@ function endCourt(id){
     S.courts=S.courts.filter(x=>x.id!==id);
   }
 
+  save();
   swapSrc=null;
   renderSwapBar();
   renderCourts();
@@ -757,6 +796,7 @@ function clickPill(srcEncoded){
   setPlayer(src,pA);
 
   swapSrc=null;
+  save();
   renderSwapBar();
   renderCourts();
 }
