@@ -194,6 +194,9 @@ input:focus,select:focus{
   outline-offset:2px;
   animation:pulse-border .8s infinite alternate
 }
+.pill.late{
+  box-shadow:0 0 0 3px rgba(255,196,87,.22), 0 4px 10px rgba(0,0,0,.05);
+}
 @keyframes pulse-border{
   from{box-shadow:0 0 0 3px rgba(255,160,64,.15)}
   to{box-shadow:0 0 0 6px rgba(255,160,64,.30)}
@@ -464,7 +467,7 @@ th{background:#f3fbf7;color:#47675b;font-weight:800}
 </div>
 
 <script>
-const SK='bdm_v7';
+const SK='bdm_v8';
 const TODAY=new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'});
 let S={
   numCourts:2,
@@ -553,29 +556,54 @@ function adjCourts(d){
 }
 
 /* players */
+function addPlayerCommon(name, lv){
+  if(!name)return;
+  if(S.players.find(p=>p.name===name)){alert('此球員已存在');return false;}
+
+  const newPlayer={
+    id:Date.now()+Math.random(),
+    name:name,
+    level:lv,
+    isLate:true
+  };
+
+  S.players.push(newPlayer);
+
+  if(S.courts.length>0){
+    S.nextQueue.push({...newPlayer});
+  }
+
+  if(!S.history[name])S.history[name]={count:0,totalSec:0,level:lv};
+
+  save();
+  renderPSetup();
+  renderPlayers();
+  syncPcnt();
+  syncSetup();
+
+  if(S.courts.length>0){
+    renderSwapBar();
+    renderCourts();
+  }
+  return true;
+}
+
 function addP(){
   const n=document.getElementById('pname').value.trim();
   const lv=parseInt(document.getElementById('plv').value);
-  if(!n)return;
-  if(S.players.find(p=>p.name===n)){alert('此球員已存在');return;}
-  S.players.push({id:Date.now()+Math.random(),name:n,level:lv});
-  if(!S.history[n])S.history[n]={count:0,totalSec:0,level:lv};
-  document.getElementById('pname').value='';
-  save();renderPSetup();syncPcnt();syncSetup();
+  const ok=addPlayerCommon(n,lv);
+  if(ok) document.getElementById('pname').value='';
 }
 function addP2(){
   const n=document.getElementById('pname2').value.trim();
   const lv=parseInt(document.getElementById('plv2').value);
-  if(!n)return;
-  if(S.players.find(p=>p.name===n)){alert('此球員已存在');return;}
-  S.players.push({id:Date.now()+Math.random(),name:n,level:lv});
-  if(!S.history[n])S.history[n]={count:0,totalSec:0,level:lv};
-  document.getElementById('pname2').value='';
-  save();renderPlayers();syncPcnt();renderPSetup();syncSetup();
+  const ok=addPlayerCommon(n,lv);
+  if(ok) document.getElementById('pname2').value='';
 }
 function removeP(id){
   S.players=S.players.filter(p=>p.id!==id);
-  save();renderPlayers();renderPSetup();syncPcnt();syncSetup();
+  S.nextQueue=S.nextQueue.filter(p=>p.id!==id);
+  save();renderPlayers();renderPSetup();syncPcnt();syncSetup();renderCourts();
 }
 function syncPcnt(){
   const t=S.players.length?`共 ${S.players.length} 位球員`:'尚無球員';
@@ -598,6 +626,7 @@ function renderPSetup(){
     <div class="prow">
       <span style="font-weight:700">${p.name}</span>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+        ${p.isLate ? `<span class="tag" style="background:#FFF4CC;color:#8A6500">晚到</span>` : ``}
         ${dotEl(p.level)}<span style="font-size:12px;color:${lvC(p.level).fg};font-weight:700">Lv${p.level}</span>
         <button class="btn btn-red btn-sm" onclick="removeP(${p.id})">移除</button>
       </div>
@@ -615,6 +644,7 @@ function renderPlayers(){
     <div class="prow">
       <span style="font-weight:700">${p.name}</span>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+        ${p.isLate ? `<span class="tag" style="background:#FFF4CC;color:#8A6500">晚到</span>` : ``}
         ${dotEl(p.level)}<span style="font-size:12px;color:${lvC(p.level).fg};font-weight:700">Lv${p.level}</span>
         <button class="btn btn-red btn-sm" onclick="removeP(${p.id})">移除</button>
       </div>
@@ -640,7 +670,7 @@ function doArrange(){
   S.courts=[];
   S.nextQueue=[];
 
-  const pool=[...S.players].sort((a,b)=>b.level-a.level);
+  const pool=[...S.players].map(p=>({...p,isLate:false})).sort((a,b)=>b.level-a.level);
   const n=Math.min(S.numCourts,Math.floor(pool.length/4));
   for(let i=0;i<n;i++){
     const m=bestMatch4(pool.splice(0,4));
@@ -663,6 +693,7 @@ function startCourt(id){
     if(!S.history[p.name])S.history[p.name]={count:0,totalSec:0,level:p.level};
     S.history[p.name].count++;
     S.history[p.name].level=p.level;
+    p.isLate=false;
   });
 
   save();
@@ -689,6 +720,7 @@ function pickNextFourFromQueue(){
   }
 
   eligible.sort((a,b)=>{
+    if(!!b.isLate !== !!a.isLate) return Number(b.isLate)-Number(a.isLate);
     const ca=(S.history[a.name]||{count:0}).count;
     const cb=(S.history[b.name]||{count:0}).count;
     if(ca!==cb) return ca-cb;
@@ -701,6 +733,7 @@ function pickNextFourFromQueue(){
   const ids = new Set(four.map(p=>p.id));
   S.nextQueue = S.nextQueue.filter(p => !ids.has(p.id));
 
+  four.forEach(p=>p.isLate=false);
   return four;
 }
 
@@ -730,7 +763,7 @@ function endCourt(id){
     mins:Math.round(elapsed/60)
   });
 
-  const justPlayed=[...c.teamA,...c.teamB];
+  const justPlayed=[...c.teamA,...c.teamB].map(p=>({...p,isLate:false}));
   lastPlayers=justPlayed.map(p=>p.name);
 
   S.nextQueue.push(...justPlayed);
@@ -836,14 +869,16 @@ function renderCourts(){
     const srcEncoded=encodeURIComponent(JSON.stringify(src));
     const isSelected=swapSrc&&srcKey(swapSrc)===srcKey(src);
     const isTarget=isSwapping&&!isSelected;
-    const cls=`pill${isSelected?' selected':isTarget?' swap-target':''}`;
+    const lateClass=p.isLate ? ' late' : '';
+    const cls=`pill${lateClass}${isSelected?' selected':isTarget?' swap-target':''}`;
     const title=isSelected
       ? '再次點擊取消選取'
       : isSwapping
         ? '點擊此球員進行調換'
         : '點擊選取，再點另一位球員即可調換';
 
-    return `<span class="${cls}" style="${pStyle(p.level)}" onclick="clickPill('${srcEncoded}')" title="${title}">${p.name} · ${p.level}</span>`;
+    const lateMark = p.isLate ? ' 🆕' : '';
+    return `<span class="${cls}" style="${pStyle(p.level)}" onclick="clickPill('${srcEncoded}')" title="${title}">${p.name} · ${p.level}${lateMark}</span>`;
   }
 
   let html=`<div class="courts-grid">`;
@@ -894,11 +929,13 @@ function renderCourts(){
 
   if(S.nextQueue.length>0){
     const qPills=S.nextQueue.map((p,i)=>makePill(p,{type:'queue',idx:i})).join('');
+    const lateCount = S.nextQueue.filter(p=>p.isLate).length;
     html+=`
       <div class="card" style="border:1px solid #BFDFFF;margin-top:14px">
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
           <span style="font-size:15px;font-weight:800">🐥 候補隊伍</span>
           <span class="tag" style="background:#EEEDFE;color:#3C3489">等待 ${S.nextQueue.length} 人</span>
+          ${lateCount ? `<span class="tag" style="background:#FFF4CC;color:#8A6500">晚到 ${lateCount} 位</span>` : ``}
           ${isSwapping ? `<span class="hint" style="color:#a06000">← 也可與候補球員調換</span>` : ``}
         </div>
         <div style="display:flex;gap:5px;flex-wrap:wrap">${qPills}</div>
