@@ -601,9 +601,58 @@ function addP2(){
   if(ok) document.getElementById('pname2').value='';
 }
 function removeP(id){
-  S.players=S.players.filter(p=>p.id!==id);
-  S.nextQueue=S.nextQueue.filter(p=>p.id!==id);
-  save();renderPlayers();renderPSetup();syncPcnt();syncSetup();renderCourts();
+  // 先找被刪除的球員，避免他留在場上或剛打完名單裡
+  const delPlayer = S.players.find(p=>p.id===id)
+    || S.nextQueue.find(p=>p.id===id)
+    || S.courts.flatMap(c=>[...c.teamA,...c.teamB]).find(p=>p.id===id);
+
+  // 球員總名單刪除
+  S.players = S.players.filter(p=>p.id!==id);
+
+  // 候補名單刪除
+  S.nextQueue = S.nextQueue.filter(p=>p.id!==id);
+
+  // 場上隊伍也刪除，避免結束時又被丟回候補
+  S.courts.forEach(c=>{
+    c.teamA = c.teamA.filter(p=>p.id!==id);
+    c.teamB = c.teamB.filter(p=>p.id!==id);
+
+    // 如果場上少人，優先從候補補上
+    while(c.teamA.length < 2 && S.nextQueue.length > 0){
+      c.teamA.push(S.nextQueue.shift());
+    }
+    while(c.teamB.length < 2 && S.nextQueue.length > 0){
+      c.teamB.push(S.nextQueue.shift());
+    }
+  });
+
+  // 如果補不滿 2 vs 2，該場先移除，避免殘缺場次繼續排
+  S.courts = S.courts.filter(c=>c.teamA.length===2 && c.teamB.length===2);
+
+  // 剛打完名單也移除，避免防連打邏輯誤判
+  if(delPlayer){
+    lastPlayers = lastPlayers.filter(n=>n!==delPlayer.name);
+  }
+
+  // 如果目前正在選取要互換的球員也被刪掉，就取消互換模式
+  if(swapSrc){
+    try{
+      const selected = getPlayer(swapSrc);
+      if(!selected || selected.id===id){
+        swapSrc = null;
+      }
+    }catch(e){
+      swapSrc = null;
+    }
+  }
+
+  save();
+  renderPlayers();
+  renderPSetup();
+  syncPcnt();
+  syncSetup();
+  renderSwapBar();
+  renderCourts();
 }
 function syncPcnt(){
   const t=S.players.length?`共 ${S.players.length} 位球員`:'尚無球員';
