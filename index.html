@@ -1036,7 +1036,13 @@ function renderHistory(){
       <tr>
         <td style="font-weight:${i<3?'700':'500'}">${['🥇','🥈','🥉'][i]||''}${i<3?' ':''}${name}</td>
         <td>${dotEl(h.level)}</td>
-        <td>${h.count} 次</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-red btn-sm" onclick="adjustPlayerCount('${name}', -1)">－</button>
+            <span style="font-weight:800;min-width:48px;text-align:center">${h.count} 次</span>
+            <button class="btn btn-green btn-sm" onclick="adjustPlayerCount('${name}', 1)">＋</button>
+          </div>
+        </td>
         <td>${fmtDur(h.totalSec)}</td>
       </tr>
     `).join('')
@@ -1060,6 +1066,15 @@ function renderHistory(){
       </div>
     </div>
   `).join('');
+}
+
+function adjustPlayerCount(name, delta){
+  if(!S.history[name]) return;
+
+  S.history[name].count = Math.max(0, S.history[name].count + delta);
+
+  save();
+  renderHistory();
 }
 
 /* archives */
