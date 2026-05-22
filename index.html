@@ -1036,13 +1036,7 @@ function renderHistory(){
       <tr>
         <td style="font-weight:${i<3?'700':'500'}">${['🥇','🥈','🥉'][i]||''}${i<3?' ':''}${name}</td>
         <td>${dotEl(h.level)}</td>
-        <td>
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-            <button class="btn btn-red btn-sm" onclick="adjustPlayerCount('${name}', -1)">－</button>
-            <span style="font-weight:800;min-width:48px;text-align:center">${h.count} 次</span>
-            <button class="btn btn-green btn-sm" onclick="adjustPlayerCount('${name}', 1)">＋</button>
-          </div>
-        </td>
+        <td>${h.count} 次</td>
         <td>${fmtDur(h.totalSec)}</td>
       </tr>
     `).join('')
@@ -1053,11 +1047,14 @@ function renderHistory(){
     return;
   }
 
-  document.getElementById('glog').innerHTML=S.gameLog.slice().reverse().map(g=>`
+  document.getElementById('glog').innerHTML=S.gameLog.slice().reverse().map((g,reverseIndex)=>`
     <div style="padding:10px 0;border-bottom:1px solid #e8e5dd">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px">
         <span style="font-weight:800">第 ${g.seq} 場 · 球場 ${g.court}</span>
-        <span class="hint">${g.startStr} → ${g.endStr}（${g.mins} 分鐘）</span>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span class="hint">${g.startStr} → ${g.endStr}（${g.mins} 分鐘）</span>
+          <button class="btn btn-red btn-sm" onclick="deleteGameRecord(${S.gameLog.length - 1 - reverseIndex})">刪除</button>
+        </div>
       </div>
       <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">
         ${g.teamA.map(p=>`<span class="pill" style="${pStyle(p.level)};cursor:default">${p.name} · ${p.level}</span>`).join('')}
@@ -1068,10 +1065,24 @@ function renderHistory(){
   `).join('');
 }
 
-function adjustPlayerCount(name, delta){
-  if(!S.history[name]) return;
+function deleteGameRecord(index){
+  const g = S.gameLog[index];
+  if(!g) return;
 
-  S.history[name].count = Math.max(0, S.history[name].count + delta);
+  if(!confirm(`確定刪除第 ${g.seq} 場？`)) return;
+
+  [...g.teamA, ...g.teamB].forEach(p=>{
+    if(S.history[p.name]){
+      S.history[p.name].count = Math.max(0, S.history[p.name].count - 1);
+      S.history[p.name].totalSec = Math.max(0, S.history[p.name].totalSec - (g.mins * 60));
+    }
+  });
+
+  S.gameLog.splice(index,1);
+  S.gameLog.forEach((item,i)=>{
+    item.seq = i + 1;
+  });
+  gameSeq = S.gameLog.length;
 
   save();
   renderHistory();
