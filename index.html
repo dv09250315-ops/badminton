@@ -242,6 +242,12 @@ input:focus,select:focus{
   letter-spacing:1px
 }
 
+.next-card{
+  border:1.5px solid #ffd080;
+  background:linear-gradient(180deg,#fffdf6 0%,#ffffff 100%);
+  margin-top:14px
+}
+
 .stats-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
@@ -474,6 +480,7 @@ let S={
   players:[],
   courts:[],
   nextQueue:[],
+  nextPinned:false,   // 手動調換過「下一場」後，鎖定順序不再自動重排
   history:{},
   gameLog:[],
   archives:{},
@@ -727,6 +734,7 @@ function doArrange(){
   lastPlayers=[];
   S.courts=[];
   S.nextQueue=[];
+  S.nextPinned=false;
 
   const pool=[...S.players].map(p=>({...p,isLate:false})).sort((a,b)=>b.level-a.level);
   const n=Math.min(S.numCourts,Math.floor(pool.length/4));
@@ -768,31 +776,35 @@ function startCourt(id){
   renderCourts();
 }
 
-function pickNextFourFromQueue(){
-  if(S.nextQueue.length < 4) return null;
-
-  let eligible = S.nextQueue.filter(p => !lastPlayers.includes(p.name));
-
-  if(eligible.length < 4){
-    eligible = [...S.nextQueue];
-  }
-
-  eligible.sort((a,b)=>{
-    if(!!b.isLate !== !!a.isLate) return Number(b.isLate)-Number(a.isLate);
+/* 候補排序：前 4 位就是「下一場」，前 2 位 vs 後 2 位 */
+function sortQueue(){
+  if(S.nextPinned)return; // 手動調換後不再自動重排
+  S.nextQueue.sort((a,b)=>{
+    const la=lastPlayers.includes(a.name)?1:0;
+    const lb=lastPlayers.includes(b.name)?1:0;
+    if(la!==lb)return la-lb;                       // 剛打完的排後面
+    if(!!b.isLate!==!!a.isLate)return Number(b.isLate)-Number(a.isLate); // 晚到優先
     const ca=(S.history[a.name]||{count:0}).count;
     const cb=(S.history[b.name]||{count:0}).count;
-    if(ca!==cb) return ca-cb;
+    if(ca!==cb)return ca-cb;                       // 上場少的優先
     return b.level-a.level;
   });
+  for(let k=0;k<nextGroups();k++){
+    const m=bestMatch4(S.nextQueue.slice(k*4,k*4+4));
+    S.nextQueue.splice(k*4,4,...m.tA,...m.tB);
+  }
+}
+/* 有幾面場就顯示幾組「下一場」（人數不夠就少幾組） */
+function nextGroups(){
+  return Math.min(S.numCourts,Math.floor(S.nextQueue.length/4));
+}
 
-  const four = eligible.slice(0,4);
-  if(four.length < 4) return null;
-
-  const ids = new Set(four.map(p=>p.id));
-  S.nextQueue = S.nextQueue.filter(p => !ids.has(p.id));
-
+function pickNextFourFromQueue(){
+  if(S.nextQueue.length < 4) return null;
+  sortQueue();
+  const four=S.nextQueue.splice(0,4);
   four.forEach(p=>p.isLate=false);
-  return four;
+  return four; // [A1,A2,B1,B2]
 }
 
 function endCourt(id){
@@ -829,10 +841,8 @@ function endCourt(id){
   const four=pickNextFourFromQueue();
 
   if(four){
-    four.sort((a,b)=>b.level-a.level);
-    const m=bestMatch4(four);
-    c.teamA=m.tA;
-    c.teamB=m.tB;
+    c.teamA=four.slice(0,2);
+    c.teamB=four.slice(2,4);
     c.status='waiting';
     c.startTime=null;
     c.elapsed=0;
@@ -886,6 +896,9 @@ function clickPill(srcEncoded){
   setPlayer(swapSrc,pB);
   setPlayer(src,pA);
 
+  // 只要動到候補區（含下一場），就鎖定順序
+  if(swapSrc.type==='queue'||src.type==='queue')S.nextPinned=true;
+
   swapSrc=null;
   save();
   renderSwapBar();
@@ -896,10 +909,11 @@ function renderSwapBar(){
   if(!el)return;
   if(!swapSrc){el.innerHTML='';return;}
   const p=getPlayer(swapSrc);
+  if(!p){swapSrc=null;el.innerHTML='';return;}
   const c=lvC(p.level);
   const loc=swapSrc.type==='court'
     ? `球場 ${swapSrc.courtId} 隊${swapSrc.team==='A'?'A':'B'}`
-    : '候補區';
+    : (swapSrc.idx<nextGroups()*4 ? `下一場 第${Math.floor(swapSrc.idx/4)+1}組` : '候補區');
 
   el.innerHTML=`
     <div class="swap-bar">
@@ -920,6 +934,8 @@ function renderCourts(){
     el.innerHTML=`<div class="empty">請先完成設定並點擊「自動排場」</div>`;
     return;
   }
+
+  sortQueue();
 
   const isSwapping=!!swapSrc;
 
@@ -985,23 +1001,82 @@ function renderCourts(){
 
   html+=`</div>`;
 
-  if(S.nextQueue.length>0){
-    const qPills=S.nextQueue.map((p,i)=>makePill(p,{type:'queue',idx:i})).join('');
-    const lateCount = S.nextQueue.filter(p=>p.isLate).length;
-    html+=`
-      <div class="card" style="border:1px solid #BFDFFF;margin-top:14px">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
-          <span style="font-size:15px;font-weight:800">🐥 候補隊伍</span>
-          <span class="tag" style="background:#EEEDFE;color:#3C3489">等待 ${S.nextQueue.length} 人</span>
-          ${lateCount ? `<span class="tag" style="background:#FFF4CC;color:#8A6500">晚到 ${lateCount} 位</span>` : ``}
-          ${isSwapping ? `<span class="hint" style="color:#a06000">← 也可與候補球員調換</span>` : ``}
+  /* 下一場 */
+  const q=S.nextQueue;
+  if(q.length>0){
+    const lateCount = q.filter(p=>p.isLate).length;
+
+    const G=nextGroups();
+    if(G>0){
+      let groups='';
+      for(let k=0;k<G;k++){
+        const nA=q.slice(k*4,k*4+2), nB=q.slice(k*4+2,k*4+4);
+        const sA=nA.reduce((s,p)=>s+p.level,0);
+        const sB=nB.reduce((s,p)=>s+p.level,0);
+        const pA=nA.map((p,i)=>makePill(p,{type:'queue',idx:k*4+i})).join('');
+        const pB=nB.map((p,i)=>makePill(p,{type:'queue',idx:k*4+i+2})).join('');
+        groups+=`
+          <div style="padding:10px 12px;margin-bottom:8px;border:1px dashed #ffd080;border-radius:16px;background:#fff">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+              <span style="font-weight:800;font-size:14px">第 ${k+1} 組</span>
+              <span class="hint">強度差 ${Math.abs(sA-sB)}</span>
+            </div>
+            <div style="margin-bottom:8px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+              <span style="font-size:12px;color:#6c7a73;min-width:58px;font-weight:700">隊伍 A (${sA})</span>${pA}
+            </div>
+            <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+              <span style="font-size:12px;color:#6c7a73;min-width:58px;font-weight:700">隊伍 B (${sB})</span>${pB}
+            </div>
+          </div>`;
+      }
+      html+=`
+        <div class="card next-card">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+            <span style="font-size:16px;font-weight:800">⏭️ 下一場（${G} 組）</span>
+            ${G<S.numCourts ? `<span class="tag" style="background:#F3F4F6;color:#666">場地 ${S.numCourts} 面，人數只夠 ${G} 組</span>` : ``}
+            ${S.nextPinned ? `<span class="tag" style="background:#EEEDFE;color:#3C3489">已手動調整</span>` : ``}
+            <span class="hint">${isSwapping ? '← 點另一位球員完成調換' : '點任一位球員，再點另一位即可調換（可跨組、跟球場或候補互換）'}</span>
+          </div>
+          ${groups}
+          ${S.nextPinned ? `<button class="btn btn-orange btn-sm" onclick="resetNext()">↺ 恢復自動排序</button>` : ``}
         </div>
-        <div style="display:flex;gap:5px;flex-wrap:wrap">${qPills}</div>
-      </div>
-    `;
+      `;
+    }else{
+      html+=`
+        <div class="card next-card">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+            <span style="font-size:16px;font-weight:800">⏭️ 下一場</span>
+            <span class="tag" style="background:#F3F4F6;color:#666">人數不足 4 人</span>
+          </div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">${q.map((p,i)=>makePill(p,{type:'queue',idx:i})).join('')}</div>
+        </div>
+      `;
+    }
+
+    /* 其餘候補 */
+    if(q.length>G*4){
+      const qPills=q.slice(G*4).map((p,i)=>makePill(p,{type:'queue',idx:i+G*4})).join('');
+      html+=`
+        <div class="card" style="border:1px solid #BFDFFF">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:800">🐥 候補隊伍</span>
+            <span class="tag" style="background:#EEEDFE;color:#3C3489">再後面 ${q.length-G*4} 人</span>
+            ${lateCount ? `<span class="tag" style="background:#FFF4CC;color:#8A6500">晚到 ${lateCount} 位</span>` : ``}
+            ${isSwapping ? `<span class="hint" style="color:#a06000">← 也可與候補球員調換</span>` : ``}
+          </div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">${qPills}</div>
+        </div>
+      `;
+    }
   }
 
   el.innerHTML=html;
+}
+function resetNext(){
+  S.nextPinned=false;
+  swapSrc=null;
+  renderSwapBar();
+  renderCourts();
 }
 
 /* today history */
