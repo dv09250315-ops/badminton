@@ -519,6 +519,8 @@ function load(){
     const d=JSON.parse(raw);
     S.numCourts=d.numCourts||2;
     S.players=d.players||[];
+    // 球場狀態不會被保存，重新載入時還沒排場，所以沒有人算晚到
+    S.players.forEach(p=>p.isLate=false);
     S.archives=d.archives||{};
     lastPlayers=d.lastPlayers||[];
     if(d.lastSaved===TODAY){
@@ -571,7 +573,7 @@ function addPlayerCommon(name, lv){
     id:Date.now()+Math.random(),
     name:name,
     level:lv,
-    isLate:true
+    isLate:S.courts.length>0   // 尚未排場 → 不算晚到；排場後才加入才算
   };
 
   S.players.push(newPlayer);
@@ -617,8 +619,7 @@ function removeP(id){
 
   const playerName=delPlayer.name;
 
-  if(!confirm(`確定要移除球員「${playerName}」嗎？
-今日球員統計也會一併移除。`))return;
+  if(!confirm(`確定要移除球員「${playerName}」嗎？\n今日球員統計也會一併移除。`))return;
 
   // 球員總名單刪除
   S.players = S.players.filter(p=>p.id!==id);
@@ -736,6 +737,8 @@ function doArrange(){
   S.nextQueue=[];
   S.nextPinned=false;
 
+  S.players.forEach(p=>p.isLate=false);   // 排場時清掉總名單的晚到標記
+
   const pool=[...S.players].map(p=>({...p,isLate:false})).sort((a,b)=>b.level-a.level);
   const n=Math.min(S.numCourts,Math.floor(pool.length/4));
   for(let i=0;i<n;i++){
@@ -760,6 +763,9 @@ function startCourt(id){
     S.history[p.name].count++;
     S.history[p.name].level=p.level;
     p.isLate=false;
+
+    const sp=S.players.find(x=>x.id===p.id);   // 同步清掉總名單的晚到標記
+    if(sp)sp.isLate=false;
   });
 
   save();
